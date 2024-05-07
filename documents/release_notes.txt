@@ -1,0 +1,16 @@
+01 May 2024 - version 0.0.1
+
+Having isolated compiler issues within the platformio system.  I am now in a position to start to migrate all the code into a new defined project.
+
+ECAC is a continuation of my university masters thesis and attempts to move from an overhead sensor arrangement to side facing sensors.
+
+Purpose:
+Build framework of application:
+
+Complete.  Included within documents is a template to use for headers that forces the compiler to use c++ rather than c.
+
+Build macros for fixed inputs/outputs:  switches, leds (visual), leds (infrared):
+
+
+Build display class:
+
