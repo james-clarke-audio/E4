@@ -10,8 +10,8 @@
  *     license that can be found in the LICENSE file or at                    *
  *     https://opensource.org/licenses/MIT.                                   *
  ******************************************************************************/
-#ifndef <HEADER>_H
-#define <HEADER>_H
+#ifndef CONFIG_E4_H
+#define CONFIG_E4_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,10 +23,8 @@ extern "C" {
  * -------------------------------------------------------------------------- *
  ******************************************************************************/
 
-
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // <HEADER>_H
+#endif // CONFIG_E4_H

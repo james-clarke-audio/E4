@@ -15,10 +15,29 @@
 extern "C" {
 #endif
 
-/* Code goes here */
+class TestCPP;
+extern TestCPP TestObj;
 
-/******************************************************************************
- ******************************************************************************/
+class TestCPP
+{
+public:
+    TestCPP() : Counter(0) {}
+    TestCPP(uint8_t Value) :
+	Counter(Value){}
+
+    void Increment(void)
+    {
+        Counter++;
+    }
+
+    uint8_t Get(void) 
+    {
+        return Counter;
+    }
+
+private:
+    uint8_t Counter;
+};
 
 #ifdef __cplusplus
 }
