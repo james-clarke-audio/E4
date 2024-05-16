@@ -10,23 +10,22 @@
  *     https://opensource.org/licenses/MIT.                                   *
  ******************************************************************************/
 #include "config.h"
-#include "classtest.h"
-#include "display.h"
+#include <display.h>
 
 /* Private forward function prototypes */
 void GPIO_Init(void);
 void SystemClock_Config(void);
 void Error_Handler_Main(void);
 
-TestCPP TestObj(3);
-Display display(0);
+// create object for OLED display
+// see config-blackpill.h for pin definitions
+Display display(SDA_PIN, SCL_PIN, I2C_MODULE); 
 
-/* Global Font used for application */
-FontDef_t Font_6x8 = {
-    6,
-    8,
-    Font6x8
-};
+/* Global Fonts used for application */
+FontDef_t Font_7x10 = {7, 10, Font7x10};
+FontDef_t Font_11x18 = {11, 18, Font11x18};
+FontDef_t Font_16x26 = {16, 26, Font16x26};
+FontDef_t Font_6x8 = {6, 8, Font6x8};
 
 int main()
 {
@@ -38,7 +37,7 @@ int main()
 
 	  /* Welcome to E4! */
   	display.GotoXY (5, 1);
-    display.Puts ((char*)"Welcome to ECAC", &Font_6x8, (DISPLAY_COLOR_t)1);
+    display.Puts ((char*)"Welcome Again", &Font_6x8, (DISPLAY_COLOR_t)1);
     display.GotoXY (5, 8);
     display.Puts ((char*)"(c) James Clarke", &Font_6x8, (DISPLAY_COLOR_t)1);
 

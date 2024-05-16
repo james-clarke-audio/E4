@@ -41,18 +41,6 @@ const uint8_t MOTOR_RIGHT_PWM = 10;
 #define IR_FRONT_LEFT GPIO_PIN_4
 #define IR_SIDE_LEFT GPIO_PIN_5
 
-// the sensor ADC channels in case we have no special use for a given channel
-/*
-const uint8_t SENSOR_0 = A0;
-const uint8_t SENSOR_1 = A1;
-const uint8_t SENSOR_2 = A2;
-const uint8_t SENSOR_3 = A3;
-const uint8_t SENSOR_4 = A4;
-const uint8_t SENSOR_5 = A5;
-const uint8_t SENSOR_6 = A6;
-const uint8_t BATTERY_PIN = A7; 
-*/
-
 // LED Indicators
 #define LED_RIGHT GPIO_PIN_2
 #define LED_LEFT GPIO_PIN_10
@@ -65,6 +53,16 @@ const uint8_t BATTERY_PIN = A7;
 // User Buttons
 #define BUTTON_LEFT GPIO_PIN_11
 #define BUTTON_RIGHT GPIO_PIN_12
+
+/* I2C OLED Display */
+#define SCL_PIN GPIO_PIN_8
+#define SDA_PIN GPIO_PIN_9
+#define I2C_MODULE 1
+
+/* SPI Gyro and Accelerometer */
+
+
+
 
 /* useful macros */
 #define LED_LEFT_ON()			HAL_GPIO_WritePin(LED_LEFT_GPIO_Port, LED_LEFT, GPIO_PIN_SET)
@@ -84,6 +82,8 @@ const uint8_t BATTERY_PIN = A7;
 /* SWITCHES */
 #define SWITCH_LEFT()			HAL_GPIO_ReadPin(GPIOA, BUTTON_LEFT)
 #define SWITCH_RIGHT()			HAL_GPIO_ReadPin(GPIOA, BUTTON_RIGHT)
+
+
 
 #ifdef __cplusplus
 }
