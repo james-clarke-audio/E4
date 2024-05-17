@@ -19,12 +19,9 @@ void Error_Handler_Main(void);
 
 // create object for OLED display
 // see config-blackpill.h for pin definitions
-Display display(SDA_PIN, SCL_PIN, I2C_MODULE); 
+Display display(SDA_PIN, SCL_PIN, I2C_MODULE_1); 
 
 /* Global Fonts used for application */
-FontDef_t Font_7x10 = {7, 10, Font7x10};
-FontDef_t Font_11x18 = {11, 18, Font11x18};
-FontDef_t Font_16x26 = {16, 26, Font16x26};
 FontDef_t Font_6x8 = {6, 8, Font6x8};
 
 int main()
@@ -37,17 +34,17 @@ int main()
 
 	  /* Welcome to E4! */
   	display.GotoXY (5, 1);
-    display.Puts ((char*)"Welcome Again", &Font_6x8, (DISPLAY_COLOR_t)1);
+    display.Print ("Welcome to E4", Font_6x8, COLOR_WHITE);
     display.GotoXY (5, 8);
-    display.Puts ((char*)"(c) James Clarke", &Font_6x8, (DISPLAY_COLOR_t)1);
+    display.Print ("(c) James Clarke", Font_6x8, COLOR_WHITE);
 
-    display.DrawRectangle (0, 0, 128, 15, (DISPLAY_COLOR_t)1);
-    display.DrawRectangle (0, 16, 128, 63, (DISPLAY_COLOR_t)1);
+    display.DrawRectangle (0, 0, 128, 15, COLOR_WHITE);
+    display.DrawRectangle (0, 16, 128, 63, COLOR_WHITE);
 
     display.GotoXY (5,40);
-    display.Puts ((char*)"Left Button Off", &Font_6x8, (DISPLAY_COLOR_t)1);
+    display.Print ("Left Button Off", Font_6x8, COLOR_WHITE);
     display.GotoXY (5,50);
-    display.Puts ((char*)"Right Button Off", &Font_6x8, (DISPLAY_COLOR_t)1);
+    display.Print ("Right Button Off", Font_6x8, COLOR_WHITE);
 
     display.UpdateScreen(); //display
 
@@ -63,14 +60,14 @@ int main()
         {
             LED_LEFT_ON();  //Turn LED ON
             display.GotoXY (5,40);
-            display.Puts ((char*)"Left Button On ", &Font_6x8, (DISPLAY_COLOR_t)0);
+            display.Print ("Left Button On ", Font_6x8, COLOR_BLACK);
             display.UpdateScreen(); //display
         }
         else
         {
             LED_LEFT_OFF();  //Turn LED OFF
             display.GotoXY (5,40);
-            display.Puts ((char*)"Left Button Off", &Font_6x8, (DISPLAY_COLOR_t)1);
+            display.Print ("Left Button Off", Font_6x8, COLOR_WHITE);
             display.UpdateScreen(); //display
         }
         //button pressed
@@ -78,14 +75,14 @@ int main()
         {
             LED_RIGHT_ON();  //Turn LED ON
             display.GotoXY (5,50);
-            display.Puts ((char*)"Right Button On ", &Font_6x8, (DISPLAY_COLOR_t)0);
+            display.Print ("Right Button On ", Font_6x8, COLOR_BLACK);
             display.UpdateScreen(); //display
         }
         else
         {
             LED_RIGHT_OFF();  //Turn LED OFF
             display.GotoXY (5,50);
-            display.Puts ((char*)"Right Button Off", &Font_6x8, (DISPLAY_COLOR_t)1);
+            display.Print ("Right Button Off", Font_6x8, COLOR_WHITE);
             display.UpdateScreen(); //display
         }
     }

@@ -29,7 +29,7 @@
  * @param sclpin        // pin assignment for I2C SCL                         *
  * @param module        // I2C module in STM32F411 (1 or 2)                   *
  *****************************************************************************/
-Display::Display(uint16_t sdapin, uint16_t sclpin, uint8_t module){
+Display::Display(uint16_t sdapin, uint16_t sclpin, uint16_t module){
     _sdapin = sdapin;
     _sclpin = sclpin;
     _module = module;
@@ -133,7 +133,7 @@ void Display::DrawPixel(uint16_t x, uint16_t y, DISPLAY_COLOR_t color) {
     }
 }
 
-char Display::Putc(char ch, FontDef_t* Font, DISPLAY_COLOR_t color) {
+char Display::Putc(char ch, FontDef_t Font, DISPLAY_COLOR_t color) {
     uint32_t i, b, j;
     
     DISPLAY_COLOR_t notcolor;
@@ -145,17 +145,17 @@ char Display::Putc(char ch, FontDef_t* Font, DISPLAY_COLOR_t color) {
 
     /* Check available space in LCD */
     if (
-        DISPLAY_WIDTH <= (SSD1306.CurrentX + Font->FontWidth) ||
-        DISPLAY_HEIGHT <= (SSD1306.CurrentY + Font->FontHeight)
+        DISPLAY_WIDTH <= (SSD1306.CurrentX + Font.FontWidth) ||
+        DISPLAY_HEIGHT <= (SSD1306.CurrentY + Font.FontHeight)
     ) {
         /* Error */
         return 0;
     }
     
     /* Go through font */
-    for (i = 0; i < Font->FontHeight; i++) {
-        b = Font->data[(ch - 32) * Font->FontHeight + i];
-        for (j = 0; j < Font->FontWidth; j++) {
+    for (i = 0; i < Font.FontHeight; i++) {
+        b = Font.data[(ch - 32) * Font.FontHeight + i];
+        for (j = 0; j < Font.FontWidth; j++) {
             if ((b << j) & 0x8000) {
                 DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), color);
             } else {
@@ -165,13 +165,13 @@ char Display::Putc(char ch, FontDef_t* Font, DISPLAY_COLOR_t color) {
     }
     
     /* Increase pointer */
-    SSD1306.CurrentX += Font->FontWidth;
+    SSD1306.CurrentX += Font.FontWidth;
     
     /* Return character written */
     return ch;
 }
 
-char Display::Puts(char* str, FontDef_t* Font, DISPLAY_COLOR_t color) {
+char Display::Print(const char str[], FontDef_t Font, DISPLAY_COLOR_t color) {
     /* Write characters */
     while (*str) {
         /* Write character by character */

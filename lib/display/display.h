@@ -55,10 +55,10 @@ typedef struct {
 	uint16_t Height;      /*!< String height in units of pixels */
 } FONTS_SIZE_t;
 
-extern FontDef_t Font_7x10;  /** 7 x 10 pixels font size structure */
-extern FontDef_t Font_11x18;  /** 11 x 18 pixels font size structure */
-extern FontDef_t Font_16x26;  /** 16 x 26 pixels font size structure */
-extern FontDef_t Font_6x8;  /** 16 x 26 pixels font size structure */
+//extern FontDef_t Font_7x10;  /** 7 x 10 pixels font size structure */
+//extern FontDef_t Font_11x18;  /** 11 x 18 pixels font size structure */
+//extern FontDef_t Font_16x26;  /** 16 x 26 pixels font size structure */
+//extern FontDef_t Font_6x8;  /** 16 x 26 pixels font size structure */
 
 // font declarations
 const uint16_t Font7x10 [] = {
@@ -490,14 +490,15 @@ typedef enum {
 class Display
 {
 public:
-    Display(uint16_t sdapin, uint16_t sclpin, uint8_t module);
+    Display(uint16_t sdapin, uint16_t sclpin, uint16_t module);
 
     uint8_t Init(void);
     void InvertDisplay(int i);
     void GotoXY(uint16_t x, uint16_t y);
     void DrawPixel(uint16_t x, uint16_t y, DISPLAY_COLOR_t color);
-    char Putc(char ch, FontDef_t* Font, DISPLAY_COLOR_t color);
-    char Puts(char* str, FontDef_t* Font, DISPLAY_COLOR_t color);
+    char Putc(char ch, FontDef_t Font, DISPLAY_COLOR_t color);
+    char Print(const char str[], FontDef_t Font, DISPLAY_COLOR_t color);
+
     void UpdateScreen(void);
     void ToggleInvert(void);
     void Fill(DISPLAY_COLOR_t color);
@@ -514,8 +515,10 @@ private:
 
     I2C _i2c;
     uint16_t _sdapin, _sclpin;
-    uint8_t _module;
+    uint16_t _module;
 
+
+    
     /* Private SSD1306 structure */
     typedef struct {
         uint16_t CurrentX;

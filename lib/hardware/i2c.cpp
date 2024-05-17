@@ -17,7 +17,7 @@
  * @param sclpin        // pin assignment for I2C SCL                         *
  * @param i2cmodule     // I2C module in STM32F411 (1 or 2)                   *
  ******************************************************************************/
-I2C::I2C(uint16_t sdapin, uint16_t sclpin, uint8_t i2cmodule)
+I2C::I2C(uint16_t sdapin, uint16_t sclpin, uint16_t i2cmodule)
 {
     _sclPin = sclpin;
     _sdaPin = sdapin;

@@ -57,7 +57,8 @@ const uint8_t MOTOR_RIGHT_PWM = 10;
 /* I2C OLED Display */
 #define SCL_PIN GPIO_PIN_8
 #define SDA_PIN GPIO_PIN_9
-#define I2C_MODULE 1
+#define I2C_MODULE_1                  ((uint16_t)0x0001)
+#define I2C_MODULE_2                  ((uint16_t)0x0002)
 
 /* SPI Gyro and Accelerometer */
 

@@ -11,6 +11,25 @@ Complete.  Included within documents is a template to use for headers that force
 
 Build macros for fixed inputs/outputs:  switches, leds (visual), leds (infrared):
 
+Build display class: Complete 17 May 2024
+interfaces with I2C class
+Use as follows:
 
-Build display class:
+#include <display.h>
 
+#define SCL_PIN GPIO_PIN_8
+#define SDA_PIN GPIO_PIN_9
+#define I2C_MODULE_1                  ((uint16_t)0x0001)
+#define I2C_MODULE_2                  ((uint16_t)0x0002)
+
+// create object for OLED display
+// see config-blackpill.h for pin definitions
+Display display(SDA_PIN, SCL_PIN, I2C_MODULE_1); 
+FontDef_t Font_6x8 = {6, 8, Font6x8};
+display.Init();  /* initialise LCD display on I2C bus */
+
+/* Welcome to E4! */
+display.GotoXY (5, 1);
+display.Print ("Welcome to E4", Font_6x8, COLOR_WHITE);
+display.GotoXY (5, 8);
+display.Print ("(c) James Clarke", Font_6x8, COLOR_WHITE);
