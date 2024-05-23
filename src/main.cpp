@@ -15,6 +15,7 @@
 #include "button.h"
 #include "led.h"
 #include "menu.h"
+#include "timer.h"
 #include "encoder.h"
 
 /* Private forward function prototypes */
@@ -34,8 +35,8 @@ FontDef_t Font_6x8 = {6, 8, Font6x8};
 Button LeftButton(BUTTON_LEFT, GPIOA);
 Button RightButton(BUTTON_RIGHT, GPIOA);
 
-Encoder leftWheel(2);
-Encoder rightWheel(4);
+Timer t2(2, 0, TIM_COUNTERMODE_UP, 65535, TIM_CLOCKDIVISION_DIV1, TIM_AUTORELOAD_PRELOAD_DISABLE);
+Timer t4(4, 0, TIM_COUNTERMODE_UP, 65535, TIM_CLOCKDIVISION_DIV1, TIM_AUTORELOAD_PRELOAD_DISABLE);
 
 // LED Objects PIN definitions in config-blackpill.h
 Led LedLeft(LED_LEFT, GPIOB, true);
@@ -73,12 +74,21 @@ int main()
 	display.Init();  
 
     // need to late bind some objects
-    //Menu menu(&LeftButton, &RightButton, &display, Font_6x8);
-
+    /* TIM2 GPIO Configuration
+    PA15     ------> TIM2_CH1   --> CHA
+    PB3     ------> TIM2_CH2    --> CHB
+    */
+    /* TIM4 GPIO Configuration
+    PB6     ------> TIM4_CH1    --> CHB
+    PB7     ------> TIM4_CH2    --> CHA
+    */
+    Menu menu(&LeftButton, &RightButton, &display, Font_6x8);
+    Encoder leftWheel(t2.GetTimer(), GPIO_PIN_15, GPIO_PIN_3, GPIOA, GPIOB, GPIO_AF1_TIM2);
+    Encoder rightWheel(t4.GetTimer(), GPIO_PIN_6, GPIO_PIN_7, GPIOB, GPIOB, GPIO_AF2_TIM4);
 
     // initialise encoders
-    leftWheel.EncoderInit();
-    rightWheel.EncoderInit();
+    leftWheel.Init();
+    rightWheel.Init();
 
     // clear all button down states
     LeftButton.ClearWasDown();
@@ -118,15 +128,17 @@ int main()
         cntL = leftWheel.Read();
         cntR = rightWheel.Read();
 
-
+        for (int z=0; z<30; z++){zz[z] = 'A';} // should reset zz[] buffer
         display.GotoXY (5,20);
-        sprintf(zz,"R = %d", cntL);
+        sprintf(zz,"L = %d", cntL);
         display.Print (zz, Font_6x8, COLOR_WHITE);
-
+        
+        for (int z=0; z<30; z++){zz[z] = ' ';}
         display.GotoXY (5,30);
-        sprintf(zz,"L = %d", cntR);
+        sprintf(zz,"R = %d", cntR);
         display.Print (zz, Font_6x8, COLOR_WHITE);
 
+        for (int z=0; z<30; z++){zz[z] = ' ';}
         display.GotoXY (5,40);
         sprintf(zz,"dummY = %d", dvalue);
         display.Print (zz, Font_6x8, COLOR_BLACK);

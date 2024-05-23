@@ -10,8 +10,8 @@
  *     license that can be found in the LICENSE file or at                    *
  *     https://opensource.org/licenses/MIT.                                   *
  ******************************************************************************/
-#ifndef ENCODER_H
-#define ENCODER_H
+#ifndef TIMER_H
+#define TIMER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,31 +19,17 @@ extern "C" {
 
 #include "stm32f4xx.h"  // Device header
 
-/*!
-* @brief Encoders Object - two wheels to drive
-*/
-
-class Encoder{
+class Timer {
 
 private:
 
-    #define ENC_CNT_L (TIM2 -> CNT)
-    #define ENC_CNT_R (TIM4 -> CNT)
-
-    #define ENC_ZERO (0)
-    #define ENC_RESOLUTION (1024 - 1)
-
     TIM_HandleTypeDef htimer;
-    void InitTimer(uint32_t alternate, uint32_t channela_pin, uint32_t channelb_pin, GPIO_TypeDef* channela_port, GPIO_TypeDef* channelb_port);
-    void Error_Handler(void);
 
 public:
-    
-    Encoder(TIM_HandleTypeDef timer, uint32_t channela_pin, uint32_t channelb_pin, GPIO_TypeDef* channela_port, GPIO_TypeDef* channelb_port, uint32_t alternate); // constructor
-    void Init();
-    uint16_t Read();
-    void ResetCount();
-    float GetAngle();
+
+    Timer(uint8_t channel, uint32_t prescaler, uint32_t countermode, uint32_t period, uint32_t clockdivision, uint32_t autoreload);
+    void InitHardware();
+    TIM_HandleTypeDef GetTimer();
 
 };
 
@@ -51,4 +37,4 @@ public:
 }
 #endif
 
-#endif // ENCODER_H
+#endif // TIMER_H

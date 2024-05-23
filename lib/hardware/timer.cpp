@@ -1,4 +1,3 @@
-#pragma once
 /******************************************************************************
  * Project: stm32 - E4                                                        *
  * -------------------------------------------------------------------------- *
@@ -10,45 +9,32 @@
  *     license that can be found in the LICENSE file or at                    *
  *     https://opensource.org/licenses/MIT.                                   *
  ******************************************************************************/
-#ifndef ENCODER_H
-#define ENCODER_H
+#include "timer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+Timer::Timer(uint8_t channel, uint32_t prescaler, uint32_t countermode, uint32_t period, uint32_t clockdivision, uint32_t autoreload){
 
-#include "stm32f4xx.h"  // Device header
+    // simple pass of the timer being created
+    switch (channel){
+        case 1: htimer.Instance = TIM1; break;
+        case 2: htimer.Instance = TIM2; break;
+        case 3: htimer.Instance = TIM3; break;
+        case 4: htimer.Instance = TIM4; break;
+        case 5: htimer.Instance = TIM5; break;
+    }
 
-/*!
-* @brief Encoders Object - two wheels to drive
-*/
+    // initialise the timer
+    htimer.Init.Prescaler = prescaler;
+    htimer.Init.CounterMode = countermode;
+    htimer.Init.Period = period;
+    htimer.Init.ClockDivision = clockdivision;
+    htimer.Init.AutoReloadPreload = autoreload;
 
-class Encoder{
-
-private:
-
-    #define ENC_CNT_L (TIM2 -> CNT)
-    #define ENC_CNT_R (TIM4 -> CNT)
-
-    #define ENC_ZERO (0)
-    #define ENC_RESOLUTION (1024 - 1)
-
-    TIM_HandleTypeDef htimer;
-    void InitTimer(uint32_t alternate, uint32_t channela_pin, uint32_t channelb_pin, GPIO_TypeDef* channela_port, GPIO_TypeDef* channelb_port);
-    void Error_Handler(void);
-
-public:
-    
-    Encoder(TIM_HandleTypeDef timer, uint32_t channela_pin, uint32_t channelb_pin, GPIO_TypeDef* channela_port, GPIO_TypeDef* channelb_port, uint32_t alternate); // constructor
-    void Init();
-    uint16_t Read();
-    void ResetCount();
-    float GetAngle();
-
-};
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif // ENCODER_H
+void Timer::InitHardware(){
+
+}
+
+TIM_HandleTypeDef Timer::GetTimer(){
+    return htimer;
+}
