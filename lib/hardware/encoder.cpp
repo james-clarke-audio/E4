@@ -33,8 +33,6 @@ Encoder::Encoder(uint8_t timer) {
         InitTimer4Hardware();
     }
 
-    __enable_irq();
-
 }
 
 void Encoder::EncoderInit(){
