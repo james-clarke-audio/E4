@@ -37,7 +37,6 @@ void I2C::i2c_init()
 {
 
     RCC->AHB1ENR|=RCC_AHB1ENR_GPIOBEN; //enable gpiob clock
-    GPIOB->MODER = 0x00000000;
     if (_i2cmodule == 1)
     {
         RCC->APB1ENR|=RCC_APB1ENR_I2C1EN; //enable i2c1 clock

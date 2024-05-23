@@ -29,8 +29,8 @@ extern "C" {
 #endif
 
 #include "stm32f4xx.h"
-#include "string.h"
-#include "stdlib.h"
+#include <string.h>
+#include <stdlib.h>
 #include "i2c.h"
 
 /******************************************************************************
@@ -54,11 +54,6 @@ typedef struct {
 	uint16_t Length;      /*!< String length in units of pixels */
 	uint16_t Height;      /*!< String height in units of pixels */
 } FONTS_SIZE_t;
-
-//extern FontDef_t Font_7x10;  /** 7 x 10 pixels font size structure */
-//extern FontDef_t Font_11x18;  /** 11 x 18 pixels font size structure */
-//extern FontDef_t Font_16x26;  /** 16 x 26 pixels font size structure */
-//extern FontDef_t Font_6x8;  /** 16 x 26 pixels font size structure */
 
 // font declarations
 const uint16_t Font7x10 [] = {
@@ -517,8 +512,6 @@ private:
     uint16_t _sdapin, _sclpin;
     uint16_t _module;
 
-
-    
     /* Private SSD1306 structure */
     typedef struct {
         uint16_t CurrentX;

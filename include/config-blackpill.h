@@ -46,44 +46,25 @@ const uint8_t MOTOR_RIGHT_PWM = 10;
 #define LED_LEFT GPIO_PIN_10
 #define LED_ONBOARD GPIO_PIN_13
 
-#define LED_LEFT_GPIO_Port GPIOB 
-#define LED_RIGHT_GPIO_Port GPIOB
-#define LED_ONBOARD_GPIO_Port GPIOC
-
 // User Buttons
 #define BUTTON_LEFT GPIO_PIN_11
 #define BUTTON_RIGHT GPIO_PIN_12
 
-/* I2C OLED Display */
+// I2C OLED Display
 #define SCL_PIN GPIO_PIN_8
 #define SDA_PIN GPIO_PIN_9
 #define I2C_MODULE_1                  ((uint16_t)0x0001)
 #define I2C_MODULE_2                  ((uint16_t)0x0002)
 
-/* SPI Gyro and Accelerometer */
+// Encoder Channels
+#define LEFT_CHA GPIO_PIN_15
+#define LEFT_CHB GPIO_PIN_3
+
+#define RIGHT_CHA GPIO_PIN_7
+#define RIGHT_CHB GPIO_PIN_6
 
 
-
-
-/* useful macros */
-#define LED_LEFT_ON()			HAL_GPIO_WritePin(LED_LEFT_GPIO_Port, LED_LEFT, GPIO_PIN_SET)
-#define LED_LEFT_OFF()			HAL_GPIO_WritePin(LED_LEFT_GPIO_Port, LED_LEFT, GPIO_PIN_RESET)
-#define LED_LEFT_TOGGLE()		HAL_GPIO_TogglePin(LED_LEFT_GPIO_Port, LED_LEFT)
-#define LED_RIGHT_ON()			HAL_GPIO_WritePin(LED_RIGHT_GPIO_Port, LED_RIGHT, GPIO_PIN_SET)
-#define LED_RIGHT_OFF()			HAL_GPIO_WritePin(LED_RIGHT_GPIO_Port, LED_RIGHT, GPIO_PIN_RESET)
-#define LED_RIGHT_TOGGLE()		HAL_GPIO_TogglePin(LED_RIGHT_GPIO_Port, LED_RIGHT)
-#define LED_BLUE_ON()			HAL_GPIO_WritePin(LED_ONBOARD_GPIO_Port, LED_ONBOARD, GPIO_PIN_RESET)
-#define LED_BLUE_OFF()			HAL_GPIO_WritePin(LED_ONBOARD_GPIO_Port, LED_ONBOARD, GPIO_PIN_SET)
-#define LED_BLUE_TOGGLE()		HAL_GPIO_TogglePin(LED_ONBOARD_GPIO_Port, LED_ONBOARD)
-
-#define LED_ALL_ON()			HAL_GPIO_WritePin (GPIOB, LED_LEFT|LED_RIGHT, GPIO_PIN_SET)
-#define LED_ALL_OFF()			HAL_GPIO_WritePin (GPIOB, LED_LEFT|LED_RIGHT, GPIO_PIN_RESET)
-#define LED_ALL_TOGGLE()		HAL_GPIO_TogglePin(GPIOB, LED_LEFT|LED_RIGHT)
-
-/* SWITCHES */
-#define SWITCH_LEFT()			HAL_GPIO_ReadPin(GPIOA, BUTTON_LEFT)
-#define SWITCH_RIGHT()			HAL_GPIO_ReadPin(GPIOA, BUTTON_RIGHT)
-
+// SPI Gyro and Accelerometer
 
 
 #ifdef __cplusplus
