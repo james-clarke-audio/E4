@@ -23,6 +23,11 @@ void GPIO_Init();
 void SystemClock_Config();
 void Error_Handler_Main();
 void CaptureButtonDownStates();
+uint8_t getUint32_tCharCnt(uint32_t value);
+uint8_t getFloat_CharCnt(float value, uint8_t places);
+void printChars(uint8_t cnt, char c);
+void printUint32_tAtWidth(uint32_t value, uint8_t width, char c, bool isRight);
+void printFloat_AtWidth(float value, uint8_t width, char c, bool isRight);
 
 // create object for OLED display
 // see config-blackpill.h for pin definitions
@@ -108,11 +113,8 @@ int main()
 
 	/* Welcome to E4! */
     display.Clear();
-  	display.GotoXY (5, 0);
+  	display.GotoXY (5, 1);
     display.Print ("Welcome", Font_6x8, COLOR_WHITE);
-    display.GotoXY (5, 8);
-    display.Print ("(c) James Clarke", Font_6x8, COLOR_WHITE);
-
     display.DrawRectangle (0, 0, 127, 15, COLOR_WHITE);
     display.DrawRectangle (0, 16, 127, 47, COLOR_WHITE);
     display.UpdateScreen(); //display
@@ -128,20 +130,17 @@ int main()
         cntL = leftWheel.Read();
         cntR = rightWheel.Read();
 
-        for (int z=0; z<30; z++){zz[z] = 'A';} // should reset zz[] buffer
         display.GotoXY (5,20);
-        sprintf(zz,"L = %d", cntL);
-        display.Print (zz, Font_6x8, COLOR_WHITE);
+        display.Print("L = ", Font_6x8, COLOR_WHITE);
+        printUint32_tAtWidth(cntL, 10, ' ', false);      // cntL
         
-        for (int z=0; z<30; z++){zz[z] = ' ';}
         display.GotoXY (5,30);
-        sprintf(zz,"R = %d", cntR);
-        display.Print (zz, Font_6x8, COLOR_WHITE);
+        display.Print("R = ", Font_6x8, COLOR_WHITE);
+        printUint32_tAtWidth(cntR, 10, ' ', false);
 
-        for (int z=0; z<30; z++){zz[z] = ' ';}
         display.GotoXY (5,40);
-        sprintf(zz,"dummY = %d", dvalue);
-        display.Print (zz, Font_6x8, COLOR_BLACK);
+        display.Print("Angle = ", Font_6x8, COLOR_WHITE);
+        printFloat_AtWidth(angleL, 10, ' ', false);
 
         display.UpdateScreen(); //display"
 
@@ -227,4 +226,90 @@ void Error_Handler_Main()
 void CaptureButtonDownStates(){
     LeftButton.CaptureDownState();
     RightButton.CaptureDownState();
+}
+
+uint8_t getUint32_tCharCnt(uint32_t value){
+
+    if (value==0){return 1;}
+    uint32_t tensCalc = 10;
+    uint8_t cnt = 1;
+
+    while (tensCalc <= value && cnt < 20){
+        tensCalc *= 10;
+        cnt += 1;
+    }
+
+    return cnt;
+}
+
+uint8_t getFloat_CharCnt(float value, uint8_t places){
+
+    if (value==0){return 1;}
+    uint8_t cnt = 1;
+
+    //float dum = 167.1234567;
+    // two components to a float: integer part, decimal part (4 decimal places only maybe!)
+    // integer component
+    int tmpInt = value;
+    int tmpNew = 0;
+    cnt = getUint32_tCharCnt(tmpInt);   // this gets the length of the integer component
+
+    // next we need to remove the integer component and leave the decimal
+    // 0.1234567
+    // iterate through decimal number by the number of decimal places asked for
+    float tmpDec = value - tmpInt;
+
+    for (int i=0; i < places; i++){
+        tmpNew = tmpDec * 10;  //1.234567
+        tmpDec = tmpDec - tmpNew;  //0.234567
+        cnt++;
+    }
+
+    return ++cnt;   // need to include a decimal point
+}
+
+void printChars(uint8_t cnt, char c){
+    if (cnt > 0){
+        char cc[] = " "; cc[0] = c;
+        for (uint8_t i = 1; i <= cnt; i++) {display.Print(cc, Font_6x8, COLOR_WHITE);}
+    }
+}
+
+void printUint32_tAtWidth(uint32_t value, uint8_t width, char c, bool isRight){
+    uint8_t numChars = getUint32_tCharCnt(value);
+    char str[numChars];
+    sprintf(str,"%d", value);
+
+    if (isRight){printChars(width-numChars, c);}
+    display.Print(str, Font_6x8, COLOR_WHITE);
+    if (!isRight){printChars(width-numChars, c);}
+}
+
+void printFloat_AtWidth(float value, uint8_t width, char c, bool isRight){
+
+    uint8_t numChars = getFloat_CharCnt(value, 4);
+    char str[numChars];
+    char dec[4];
+
+    int tmpInt1 = value;  // Get the integer (678).
+    float tmpFrac = value - (float)tmpInt1; // Get fraction (0.0123).
+    int tmpInt2 = tmpFrac*10000;
+
+    if (isRight){printChars(width-numChars, c);}
+    //print first part of number
+    sprintf (str, "%d.", tmpInt1);
+    display.Print(str, Font_6x8, COLOR_WHITE);
+
+    for (int i = 0; i < 4; i++){
+        // need to move the number up by 10 and print the actual number
+        tmpFrac = tmpFrac * (float)10;  // 0.1 becomes 1.0 and so on
+        tmpInt2 = tmpFrac;          // get the integer component
+        dec[i] = (char)(tmpInt2+ '0');
+        tmpFrac = tmpFrac - (float)tmpInt2;
+    }
+    dec[4] = ' ';  // need to NULL out the end of the char array
+    display.Print(dec, Font_6x8, COLOR_WHITE);
+
+    if (!isRight){printChars(width-numChars, c);}
+    
 }
