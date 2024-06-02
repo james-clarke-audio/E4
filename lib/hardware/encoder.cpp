@@ -27,38 +27,17 @@ void Encoder::Init(){
 
 uint16_t Encoder::Read(){
     uint16_t l_return = 0;
-    if (htimer.Instance == TIM2)
-    {
-        l_return = (uint16_t)ENC_CNT_L;
-    }
-    if (htimer.Instance == TIM4)
-    {
-        l_return = (uint16_t)ENC_CNT_R;
-    }
+    l_return = (uint16_t)htimer.Instance->CNT;
     return l_return;
 }
 
 void Encoder::ResetCount(){
-    if (htimer.Instance == TIM2)
-    {
-        ENC_CNT_L = ENC_ZERO;
-    }
-    if (htimer.Instance == TIM4)
-    {
-        ENC_CNT_R = ENC_ZERO;
-    }
+    htimer.Instance->CNT = ENC_ZERO;
 }
 
 float Encoder::GetAngle(){
     float l_return = 0.0;
-    if (htimer.Instance == TIM2)
-    {
-        l_return = (2 * 3.141 * (float)((int32_t)ENC_CNT_L - (int32_t)ENC_ZERO) / (float)ENC_RESOLUTION);
-    }
-    if (htimer.Instance == TIM4)
-    {
-        l_return = (2 * 3.141 * (float)((int32_t)ENC_ZERO - (int32_t)ENC_CNT_R) / (float)ENC_RESOLUTION);
-    }
+    l_return = (2 * 3.141 * (float)((int32_t)htimer.Instance->CNT - (int32_t)ENC_ZERO) / (float)ENC_RESOLUTION);
     return l_return;
 }
 
@@ -103,13 +82,13 @@ void Encoder::InitTimer(uint32_t alternate, uint32_t channela_pin, uint32_t chan
 
     // now the timer
     sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
-    sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;        //TIM_ICPOLARITY_RISING
     sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
-    sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+    sConfig.IC1Prescaler = TIM_ICPSC_DIV4;              //TIM_ICPSC_DIV1
     sConfig.IC1Filter = 0;
-    sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;          // TIM_ICPOLARITY_BOTHEDGE
     sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
-    sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+    sConfig.IC2Prescaler = TIM_ICPSC_DIV4;
     sConfig.IC2Filter = 0;
     if (HAL_TIM_Encoder_Init(&htimer, &sConfig) != HAL_OK)
     {

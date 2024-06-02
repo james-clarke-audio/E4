@@ -21,6 +21,7 @@ extern "C" {
 #include <stdio.h>
 #include "display.h"
 #include "button.h"
+#include "encoder.h"
 
 /*!
 * @brief Menu System Class
@@ -50,9 +51,12 @@ class Menu {
     };
     enum PageType currPage = MENU_ROOT;
 
+    // Internal / private global variables
     uint32_t loopStartMs;
+    uint16_t encStartCnt;
     bool updateAllItems;
     bool updateItemValue;
+    bool encoderDirection = false;  //false  means -ve, true means +ve
     uint8_t itemCnt;
     uint8_t pntrPos;
     uint8_t displayOffset;
@@ -67,6 +71,7 @@ class Menu {
     void page_MenuSetUp();    
     void page_MenuCalibrate();
 
+    // menu control function declarations
     void initMenuPage(const char title[], uint8_t itemCount);
     void captureButtonDownState();
     void adjustBoolean(bool *v);
@@ -85,12 +90,13 @@ class Menu {
     // Hardware components for the menu
     Button* _leftbutton;
     Button* _rightbutton;
+    Encoder* _wheel;
     Display* _display;
     FontDef_t _font;
 
     public:
 
-    Menu(Button* leftbutton, Button* rightbutton, Display* display, FontDef_t font);   // constructor of class
+    Menu(Button* leftbutton, Button* rightbutton, Encoder* wheel, Display* display, FontDef_t font);   // constructor of class
 
     bool TestPrint(const char str[]); 
     // main entry point for class

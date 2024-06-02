@@ -12,9 +12,10 @@
 #include "menu.h"
 
 // constructor of class
-Menu::Menu(Button* leftbutton, Button* rightbutton, Display* display, FontDef_t font){
+Menu::Menu(Button* leftbutton, Button* rightbutton, Encoder* wheel, Display* display, FontDef_t font){
     _leftbutton = leftbutton;
     _rightbutton = rightbutton;
+    _wheel = wheel;
     _display = display;
     _font = font;
 }
@@ -90,7 +91,6 @@ void Menu::page_MenuRoot(){
         doPointerNavigation();
 
         pacingWait();
-
     }
 }
 
@@ -189,6 +189,12 @@ void Menu::adjustUint8_t(uint8_t *v, uint8_t min, uint8_t max){
 }
 
 void Menu::doPointerNavigation(){
+
+    // this is also where we can use the encoders to control the navigation as well
+
+
+
+
     // check the button press
     if (_leftbutton->PressRelesed()){
         // erase the current pointer & reset the flash rate to get immediate redraw

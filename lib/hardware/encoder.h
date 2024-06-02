@@ -27,9 +27,6 @@ class Encoder{
 
 private:
 
-    #define ENC_CNT_L (TIM2 -> CNT)
-    #define ENC_CNT_R (TIM4 -> CNT)
-
     #define ENC_ZERO (0)
     #define ENC_RESOLUTION (1024 - 1)
 

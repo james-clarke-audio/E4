@@ -18,7 +18,7 @@
 #include "timer.h"
 #include "encoder.h"
 
-/* Private forward function prototypes */
+// Private forward function prototypes
 void GPIO_Init();
 void SystemClock_Config();
 void Error_Handler_Main();
@@ -56,8 +56,8 @@ Led IRSideLeft(IR_SIDE_LEFT, GPIOB, true);
 
 // global score variables (TODO : Move to local scope to clean this up)
 char zz[30];
-uint16_t cntL = 0;
-uint16_t cntR = 0;
+uint32_t cntL = 0;
+uint32_t cntR = 0;
 
 float angleL = 0.0;
 float angleR = 0.0;
@@ -78,7 +78,7 @@ int main()
     // initialise LCD display
 	display.Init();  
 
-    // need to late bind some objects
+    // encoders (pass references to menu object to use wheels as up/down buttons)
     /* TIM2 GPIO Configuration
     PA15     ------> TIM2_CH1   --> CHA
     PB3     ------> TIM2_CH2    --> CHB
@@ -87,13 +87,15 @@ int main()
     PB6     ------> TIM4_CH1    --> CHB
     PB7     ------> TIM4_CH2    --> CHA
     */
-    Menu menu(&LeftButton, &RightButton, &display, Font_6x8);
     Encoder leftWheel(t2.GetTimer(), GPIO_PIN_15, GPIO_PIN_3, GPIOA, GPIOB, GPIO_AF1_TIM2);
     Encoder rightWheel(t4.GetTimer(), GPIO_PIN_6, GPIO_PIN_7, GPIOB, GPIOB, GPIO_AF2_TIM4);
 
     // initialise encoders
     leftWheel.Init();
     rightWheel.Init();
+
+    // menu system
+    Menu menu(&LeftButton, &RightButton, &rightWheel, &display, Font_6x8);
 
     // clear all button down states
     LeftButton.ClearWasDown();
@@ -290,6 +292,11 @@ void printFloat_AtWidth(float value, uint8_t width, char c, bool isRight){
     uint8_t numChars = getFloat_CharCnt(value, 4);
     char str[numChars];
     char dec[4];
+    dec[0] = ' ';
+    dec[1] = ' ';
+    dec[2] = ' ';
+    dec[3] = ' ';
+    dec[4] = ' ';  //needed to prevent a dodgy character being displayed.  not sure why!!!
 
     int tmpInt1 = value;  // Get the integer (678).
     float tmpFrac = value - (float)tmpInt1; // Get fraction (0.0123).
@@ -307,7 +314,6 @@ void printFloat_AtWidth(float value, uint8_t width, char c, bool isRight){
         dec[i] = (char)(tmpInt2+ '0');
         tmpFrac = tmpFrac - (float)tmpInt2;
     }
-    dec[4] = ' ';  // need to NULL out the end of the char array
     display.Print(dec, Font_6x8, COLOR_WHITE);
 
     if (!isRight){printChars(width-numChars, c);}

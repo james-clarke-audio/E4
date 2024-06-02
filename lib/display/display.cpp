@@ -183,7 +183,6 @@ char Display::Print(const char str[], FontDef_t Font, DISPLAY_COLOR_t color) {
         /* Increase string pointer */
         str++;
     }
-    
     /* Everything OK, zero should be returned */
     return *str;
 }
